@@ -13,7 +13,6 @@ pub fn part1_gen(input: &str) -> (Vec<Vec<char>>, Vec<Step>) {
     let lines_iter = lines_iter_own.by_ref();
     let mut stacks: Vec<Vec<char>> = vec![Vec::new(); lines_iter.peek().unwrap().len()/4 + 1];
     let mut steps: Vec<Step> = Vec::new();
-    let mut line_counter: usize = 0;
 
     while !lines_iter.peek().unwrap().contains('1'){
         for (ind, item) in lines_iter.next().unwrap().chars().enumerate() {
@@ -21,7 +20,6 @@ pub fn part1_gen(input: &str) -> (Vec<Vec<char>>, Vec<Step>) {
                 stacks[ind / 4].push(item);
             }
         }
-        line_counter += 1;
     }
 
     for i in 0..stacks.len(){
