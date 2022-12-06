@@ -14,22 +14,23 @@ fn get_index_of_lowest(values: &[u32]) -> usize {
 
 #[aoc_generator(day1)]
 pub fn day1_gen(input: &str) -> Vec<u32> {
-    let mut calories: Vec<u32> = Vec::new();
-    let mut curr = 0;
-
-    for line in input.lines() {
-        let value = line.parse::<u32>();
-
-        if value.is_ok(){
-            curr += value.unwrap();
-        } else {
-            calories.push(curr);
-            curr = 0;
+    let (mut vec, last) = input.lines()
+    .fold((Vec::new(), 0), |mut a, x|{
+        match x.parse::<u32>() {
+            Ok(x) => {(a.0, a.1+x)}
+            _ => {a.0.push(a.1); (a.0, 0)}
         }
-    }
+    });
+    vec.push(last); 
 
-    calories.push(curr);
-    calories
+    // .fold(vec![0], |mut a, x|{
+    //     match x.parse::<u32>() {
+    //         Some(v) => {*a.last_mut().unwrap() += v;}
+    //         None => {a.push(0);}
+    //     };
+    //     a
+    // })
+    vec
 }
 
 #[aoc(day1, part1)]
