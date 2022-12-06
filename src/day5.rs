@@ -27,8 +27,8 @@ pub fn part1_gen(input: &str) -> (Vec<Vec<char>>, Vec<Step>) {
         stacks[i].retain(|&x| x != ' ');
     }
 
-    let empty1 = lines_iter.next();
-    let empty2 = lines_iter.next();
+    let _empty1 = lines_iter.next();
+    let _empty2 = lines_iter.next();
 
     let re = Regex::new(r"\d+").unwrap();
 

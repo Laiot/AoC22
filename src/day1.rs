@@ -40,8 +40,7 @@ pub fn part1(calories: &Vec<u8>) -> u8 {
 /*
 Part 2
 
-With the use of a BinaryHeap, the function takes the three highest
-values and returns their sum.
+With the use of a BinaryHeap, the function takes the three highest values and returns their sum.
 */
 #[aoc(day1, part2)]
 pub fn part2(calories: &Vec<u8>) -> u8 {
