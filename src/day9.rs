@@ -75,7 +75,6 @@ pub fn part2(motions: &str) -> usize {
                 knots[i+1] = tail_follow(knots[i], knots[i+1]);
             }
             visited_pos.insert(knots[9]);
-
         }
     }
 
