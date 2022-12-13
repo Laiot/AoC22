@@ -56,25 +56,26 @@ pub fn part2(motions: &str) -> usize {
         let reps = inputs[1].parse().unwrap();
         
         for _ in 0..reps {
+            match direction {
+                "R" => {
+                    knots[0].0 += 1
+                },
+                "L" => {
+                    knots[0].0 -= 1
+                },
+                "U" => {
+                    knots[0].1 += 1
+                },
+                "D" => {
+                    knots[0].1 -= 1
+                },
+                _ => {panic!()}
+            };
             for i in 0..9 {
-                match direction {
-                    "R" => {
-                        knots[i].0 += 1
-                    },
-                    "L" => {
-                        knots[i].0 -= 1
-                    },
-                    "U" => {
-                        knots[i].1 += 1
-                    },
-                    "D" => {
-                        knots[i].1 -= 1
-                    },
-                    _ => {panic!()}
-                };
                 knots[i+1] = tail_follow(knots[i], knots[i+1]);
-                visited_pos.insert(knots[i+1]);
             }
+            visited_pos.insert(knots[9]);
+
         }
     }
 
