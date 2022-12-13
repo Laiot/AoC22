@@ -4,7 +4,7 @@ use aoc_runner_derive::aoc;
 pub fn tail_follow(head: (isize, isize), tail: (isize, isize)) -> (isize, isize) {
     match (head.0 - tail.0, head.1 - tail.1) {
         (y, x) if (x.abs() > 1) || (y.abs() > 1) => (tail.0 + y.signum(), tail.1 + x.signum()),
-        _ => (0,0)
+        _ => (tail.0, tail.1)
     }
 }
 
@@ -20,44 +20,24 @@ pub fn part1(motions: &str) -> usize {
         let direction = inputs[0];
         let reps = inputs[1].parse().unwrap();
         
-        match direction {
-            "R" => {
-                for _ in 0..reps {
-                    head.0 += 1;
-                    tail = tail_follow(head, tail);
-                    if !visited_pos.contains(&(tail.0, tail.1)) {
-                        visited_pos.insert((tail.0, tail.1));
-                    }
-                }
-            },
-            "L" => {
-                for _ in 0..reps {
-                    head.0 -= 1;
-                    tail = tail_follow(head, tail);
-                    if !visited_pos.contains(&(tail.0, tail.1)) {
-                        visited_pos.insert((tail.0, tail.1));
-                    }
-                }
-            },
-            "U" => {
-                for _ in 0..reps {
-                    head.1 += 1;
-                    tail = tail_follow(head, tail);
-                    if !visited_pos.contains(&(tail.0, tail.1)) {
-                        visited_pos.insert((tail.0, tail.1));
-                    }
-                }
-            },
-            "D" => {
-                for _ in 0..reps {
-                    head.1 -= 1;
-                    tail = tail_follow(head, tail);
-                    if !visited_pos.contains(&(tail.0, tail.1)) {
-                        visited_pos.insert((tail.0, tail.1));
-                    }
-                }
-            },
-            _ => println!("default")
+        for _ in 0..reps {
+            match direction {
+                "R" => {
+                    head.0 += 1
+                },
+                "L" => {
+                    head.0 -= 1
+                },
+                "U" => {
+                    head.1 += 1
+                },
+                "D" => {
+                    head.1 -= 1
+                },
+                _ => {panic!()}
+            };
+            tail = tail_follow(head, tail);
+            visited_pos.insert(tail);
         }
     }
 
@@ -74,94 +54,27 @@ pub fn part2(motions: &str) -> usize {
         let inputs: Vec<&str> = motion.split(" ").collect();
         let direction = inputs[0];
         let reps = inputs[1].parse().unwrap();
-
-        match direction {
-            "R" => {
-                for _ in 0..reps {
-                    for i in 0..9 {
-                        if i == 0 || knots[i-1] != knots[1] {
-                            if knots[i].0 <= knots[i+1].0 {
-                                knots[i].0 += 1;
-                            } else if knots[i].0 - knots[i+1].0 == 1 {
-                                knots[i].0 += 1;
-                                knots[i+1].0 += 1;
-                                knots[i+1].1 = knots[i].1;
-                            } else {
-                                knots[i].0 += 1;
-                                knots[i+1].0 += 1;
-                            }
-                        }  
-                    }  
-                    if !visited_pos.contains(&(knots[9].0, knots[9].1)) {
-                        visited_pos.insert((knots[9].0, knots[9].1));
-                    }
-                }
-            },
-            "L" => {
-                for _ in 0..reps {
-                    for i in 0..9 {
-                        if i == 0 || knots[i-1] != knots[1] {
-                            if knots[i].0 >= knots[i+1].0 {
-                                knots[i].0 -= 1;
-                            } else if knots[i+1].0 - knots[i].0 == 1 {
-                                knots[i].0 -= 1;
-                                knots[i+1].0 -= 1;
-                                knots[i+1].1 = knots[i].1;
-                            } else {
-                                knots[i].0 -= 1;
-                                knots[i+1].0 -= 1;
-                            }
-                        }
-                    }
-                    if !visited_pos.contains(&(knots[9].0, knots[9].1)) {
-                        visited_pos.insert((knots[9].0, knots[9].1));
-                    }
-                }
-            },
-            "U" => {
-                for _ in 0..reps {
-                    for i in 0..9 {
-                        if i == 0 || knots[i-1] != knots[1] {
-                            if knots[i].1 <= knots[i+1].1 {
-                                knots[i].1 += 1;
-                            } else if knots[i].1 - knots[i+1].1 == 1 {
-                                knots[i].1 += 1;
-                                knots[i+1].1 += 1;
-                                knots[i+1].0 = knots[i].0;
-                            } else {
-                                knots[i].1 += 1;
-                                knots[i+1].1 += 1;
-                            }
-                        }
-                    }
-                    
-                    if !visited_pos.contains(&(knots[9].0, knots[9].1)) {
-                        visited_pos.insert((knots[9].0, knots[9].1));
-                    }
-                }
-            },
-            "D" => {
-                for _ in 0..reps {
-                    for i in 0..9 {
-                        if i == 0 || knots[i-1] != knots[1] {
-                            if knots[i].1 >= knots[i+1].1 {
-                                knots[i].1 -= 1;
-                            } else if knots[i+1].1 - knots[i].1 == 1 {
-                                knots[i].1 -= 1;
-                                knots[i+1].1 -= 1;
-                                knots[i+1].0 = knots[i].0;
-                            } else {
-                                knots[i].1 -= 1;
-                                knots[i+1].1 -= 1;
-                            }
-                        }
-                    }
-                    if !visited_pos.contains(&(knots[9].0, knots[9].1)) {
-                        visited_pos.insert((knots[9].0, knots[9].1));
-                    }
-                }
-            },
-            _ => println!("default")
+        
+        for _ in 0..reps {
+            for i in 0..9 {
+                match direction {
+                    "R" => {
+                        knots[i].0 += 1
+                    },
+                    "L" => {
+                        knots[i].0 -= 1
+                    },
+                    "U" => {
+                        knots[i].1 += 1
+                    },
+                    "D" => {
+                        knots[i].1 -= 1
+                    },
+                    _ => {panic!()}
+                };
+                knots[i+1] = tail_follow(knots[i], knots[i+1]);
+                visited_pos.insert(knots[i+1]);
+            }
         }
     }
 
