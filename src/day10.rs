@@ -6,7 +6,7 @@ pub fn check_cycle_count(cycle_count: i32) -> bool {
 
 #[aoc(day10, part1)]
 pub fn part1(input: &str) -> i32 {
-    let mut signal = 0;
+    let mut signal = 1;
     let mut cycle_count = 0;
     let mut saved_signals: Vec<i32> = Vec::new();
 
@@ -21,17 +21,22 @@ pub fn part1(input: &str) -> i32 {
                 if check_cycle_count(cycle_count) {
                     saved_signals.push(signal * cycle_count);
                 }
+                println!("{}", cycle_count*signal);
                 signal += args;
                 cycle_count += 1;
                 if check_cycle_count(cycle_count) {
                     saved_signals.push(signal * cycle_count);
                 }
+                println!("{}", cycle_count*signal);
+
             },
             _ => {
                 cycle_count += 1;
                 if check_cycle_count(cycle_count) {
                     saved_signals.push(signal * cycle_count);
                 }
+                println!("{}", cycle_count*signal);
+
             }
         }
     }
