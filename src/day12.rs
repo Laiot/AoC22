@@ -15,7 +15,7 @@ pub fn get_neigh(map: HashMap<(usize, usize), u32>, point: ((usize, usize), u32)
 
 #[aoc(day12, part1)]
 pub fn part1(input: &str) -> usize {    
-    let mut res: usize = 0;
+    let mut res: usize = usize::MAX;
     let mut map: HashMap<(usize, usize), u32> = HashMap::new();
     let mut start_point: (usize, usize) = (0,0);
     let mut end_point: (usize, usize) = (0,0);
@@ -42,16 +42,22 @@ pub fn part1(input: &str) -> usize {
     queue.push((start_point, 0));
     visited.insert(start_point, 0);
 
+    let mut temp_res: usize = 0;
+
     while let Some(next_vert) = queue.pop() {
         if next_vert.0 == end_point {
-            res = next_vert.1 + 1;
+            temp_res = next_vert.1 + 1;
+            if temp_res < res {
+                res = temp_res;
+            }
+            temp_res = 0;
         }
 
         for (coord, _) in get_neigh(map.clone(), (next_vert.0, *map.get(&next_vert.0).unwrap())) {
             if !visited.contains_key(&coord) {
                 queue.push((coord, next_vert.1 + 1));
                 visited.insert(coord, next_vert.1 + 1);
-                res += 1;
+                temp_res += 1;
             }
         }
     }
