@@ -3,12 +3,17 @@ use std::collections::HashMap;
 
 pub fn get_neigh(map: HashMap<(usize, usize), u32>, point: ((usize, usize), u32)) -> Vec<((usize, usize), u32)> {
     let mut neighs: Vec<((usize, usize), u32)> = Vec::new();
-    for (coord, height) in map {
-        if !point.eq(&(coord, height)) {
-            if (point.0.0.abs_diff(coord.0) <= 1 && point.0.1.abs_diff(coord.1) <= 1) && point.1.abs_diff(height) <= 1{
-                neighs.push((coord, height));
-            }
-        } 
+    if map.get(&(point.0.0 - 1, point.0.1)).is_some() && map.get(&(point.0.0 - 1, point.0.1)).unwrap() <= &point.1 {
+        neighs.push(((point.0.0 - 1, point.0.1), *map.get(&(point.0.0 - 1, point.0.1)).unwrap()));
+    } 
+    if map.get(&(point.0.0 + 1, point.0.1)).is_some() && map.get(&(point.0.0 + 1, point.0.1)).unwrap() <= &point.1 {
+        neighs.push(((point.0.0 + 1, point.0.1), *map.get(&(point.0.0 + 1, point.0.1)).unwrap()));
+    }
+    if map.get(&(point.0.0, point.0.1 - 1)).is_some() && map.get(&(point.0.0, point.0.1 - 1)).unwrap() <= &point.1 {
+        neighs.push(((point.0.0, point.0.1 - 1), *map.get(&(point.0.0, point.0.1 - 1)).unwrap()));
+    }
+    if map.get(&(point.0.0, point.0.1 + 1)).is_some() && map.get(&(point.0.0, point.0.1 + 1)).unwrap() <= &point.1 {
+        neighs.push(((point.0.0, point.0.1 + 1), *map.get(&(point.0.0, point.0.1 + 1)).unwrap()));
     }
     neighs
 }
