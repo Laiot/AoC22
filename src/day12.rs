@@ -1,5 +1,5 @@
 use aoc_runner_derive::aoc;
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 
 pub fn get_neigh(map: HashMap<(isize, isize), u32>, point: ((isize, isize), u32)) -> Vec<((isize, isize), u32)> {
     let mut neighs: Vec<((isize, isize), u32)> = Vec::new();
@@ -41,28 +41,22 @@ pub fn part1(input: &str) -> isize {
         }
     }
 
-    let mut queue: Vec<((isize, isize), isize)> = Vec::new();
+    let mut queue: VecDeque<((isize, isize), isize)> = VecDeque::new();
     let mut visited: HashMap<(isize, isize), isize> = HashMap::new();
 
-    queue.push((start_point, 0));
+    queue.push_back((start_point, 0));
     visited.insert(start_point, 0);
 
-    let mut temp_res: isize = 0;
-
-    while let Some(next_vert) = queue.pop() {
+    while let Some(next_vert) = queue.pop_front() {
         if next_vert.0 == end_point {
-            temp_res = next_vert.1 + 1;
-            if temp_res < res {
-                res = temp_res;
-            }
-            temp_res = 0;
+            res = next_vert.1;
+            break;
         }
 
         for (coord, _) in get_neigh(map.clone(), (next_vert.0, *map.get(&next_vert.0).unwrap())) {
             if !visited.contains_key(&coord) {
-                queue.push((coord, next_vert.1 + 1));
+                queue.push_back((coord, next_vert.1 + 1));
                 visited.insert(coord, next_vert.1 + 1);
-                temp_res += 1;
             }
         }
     }
